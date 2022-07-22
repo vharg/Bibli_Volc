@@ -5,7 +5,8 @@ Unfortunately we were only given permission to share article metadata from Scopu
 
 For anyone who has access to to the Web of Science and would like to perform a similar analysis to that conducted in this study. We have provided a word document outlining a step by step process for how to integrate new data into the existing set of scripts here.
 
-If you wish to test out the scripts shared here (even with the small amount of Scopus data available) you should:
+
+### If you wish to test out the scripts shared here (even with the small amount of Scopus data available) you should:
 
 1. Install R Studio from [here](https://www.rstudio.com/products/rstudio/download/)
 2. Download this repository to your computer
@@ -15,8 +16,13 @@ If you wish to test out the scripts shared here (even with the small amount of S
 6. Run this script then proceed to run the subsequent scripts in this folder in the order they are numbered
 7. This will produce summary results and figures that can be supplemented with additional article metadata to reproduce or update our original study
 
-Then you can make figures like this one
+
+### Then you can make figures like this one
+
 ![alt text](https://github.com/vharg/Bibli_Volc/blob/main/figs/inclusion_leadership_bars.png)
 
+### Or map the data out like this
 
 ![alt text](https://github.com/vharg/Bibli_Volc/blob/main/pie_map_plot.png?raw=true)
+
+Boom 👍 🌋
