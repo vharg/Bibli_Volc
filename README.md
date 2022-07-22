@@ -15,5 +15,8 @@ If you wish to test out the scripts shared here (even with the small amount of S
 6. Run this script then proceed to run the subsequent scripts in this folder in the order they are numbered
 7. This will produce summary results and figures that can be supplemented with additional article metadata to reproduce or update our original study
 
+Then you can make figures like this one
+![alt text](https://github.com/vharg/Bibli_Volc/blob/main/figs/inclusion_leadership_bars.png)
+
 
 ![alt text](https://github.com/vharg/Bibli_Volc/blob/main/pie_map_plot.png?raw=true)
