@@ -7,7 +7,7 @@ For anyone who has access to to the Web of Science and would like to perform a s
 
 If you wish to test out the scripts shared here (even with the small amount of Scopus data available) you should:
 
-1. Install R Studio [here](https://www.rstudio.com/products/rstudio/download/)
+1. Install R Studio from [here](https://www.rstudio.com/products/rstudio/download/)
 2. Download this repository to your computer
 3. Click on the "Bibli_volc.Rproj" Rproject file to open the project in R Studio (not base R)
 4. Click on the "install_required_packages.R" R script and run that to install all packages required for the remainder of the analysis
