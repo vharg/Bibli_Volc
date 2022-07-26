@@ -18,11 +18,12 @@ For anyone who has access to to the Web of Science and would like to perform a s
 
 
 ### Then you can make figures like this one
+Showing the number of articles led by and including locally domiciled authors from various countries where volcanoes exist
 
 ![alt text](https://github.com/vharg/Bibli_Volc/blob/main/figs/inclusion_leadership_bars.png)
 
 ### Or map the data out like this
 
-![alt text](https://github.com/vharg/Bibli_Volc/blob/main/pie_map_plot.png?raw=true)
+![alt text](https://github.com/vharg/Bibli_Volc/blob/main/figs/pie_map_plot.png)
 
 Boom 👍 🌋
