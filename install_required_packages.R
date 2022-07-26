@@ -3,9 +3,9 @@
 # May 2022
 
 # install all packages - this may take a couple minutes
-install.packages('tidyverse',
-                 'readxl',
-                 'tm',
-                 'maps',
-                 'plotly',
-                 'zoo')
+install.packages('tidyverse')
+install.packages('readxl')
+install.packages('tm')
+install.packages('maps')
+install.packages('plotly')
+install.packages('zoo')
