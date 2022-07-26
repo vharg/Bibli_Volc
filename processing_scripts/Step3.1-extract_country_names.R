@@ -24,11 +24,11 @@ rd$Addresses <- sapply(str_to_upper(rd$Addresses),toString)
 # Then insert replacements
 rd$Addresses <-  str_replace_all(string = rd$Addresses, pattern = c('AUSTL' = 'AUSTRALIA','AZORES|ACORES' = 'PORTUGAL','BURMA'='MYANMAR','CABO VERDE' = 'CAPE VERDE','COMORES|KOMORI' = 'COMOROS', 
                                                      'CANARY ISLANDS' = 'SPAIN','FED REP GER'= 'GERMANY', 'KOREA NORTH' = 'NORTH KOREA',
-                                                     'KOREA SOUTH' = 'SOUTH KOREA','U ARAB EMIRATES' = 'UNITED ARAB EMIRATES', 'GAZA STRIP'= 'PALESTINE', 
-                                                     'ST KITTS' = 'SAINT KITTS AND NEVIS','GUERNSEY AND ALDERNEY'='UNITED KINGDOM', 'ISLE OF MAN'='UNITED KINGDOM', 
-                                                     'UNITED STATES' = 'USA','BOSNIA'= 'BOSNIA AND HERZEGOVINA', 'MADIERA' = 'MADEIRA', 'TRINIDAD TOBAGO' = 'TRINIDAD AND TOBAGO',
+                                                     'KOREA SOUTH' = 'SOUTH KOREA','U ARAB EMIRATES' = 'UNITED ARAB EMIRATES', 'GAZA STRIP' = 'PALESTINE', 
+                                                     'ST KITTS' = 'SAINT KITTS AND NEVIS', 'INDIANA' = 'IN', 'UNITED STATES' = 'USA', 'PAPUA N GUINEA'= 'PAPUA NEW GUINEA',
+                                                     'BOSNIA'= 'BOSNIA AND HERZEGOVINA', 'MADIERA' = 'MADEIRA', 'TRINIDAD TOBAGO' = 'TRINIDAD AND TOBAGO',
                                                      'COTE IVOIRE' = 'IVORY COAST', 'BOSNIA' = 'BOSNIA AND HERZEGOVINA','FALKLAND ISLAND' = 'FALKLAND ISLANDS',
-                                                     'USSR' = 'RUSSIA' , 'UKRAINE'='UCRAINE', 'UK'= 'UNITED KINGDOM','PAPUA N GUINEA'= 'PAPUA NEW GUINEA', 'PEOPLES R CHINA' = 'CHINA',
+                                                     'USSR' = 'RUSSIA' , 'UKRAINE'='UCRAINE', 'UK|NORTHERN IRELAND|N. IRELAND|NORTH IRELAND|N IRELAND' = 'UNITED KINGDOM', 'PEOPLES R CHINA' = 'CHINA',
                                                      'DROC|DRC|REP CONGO|DEM REP CONGO|CONGO DEMOCRATIC REPUBLIC|DEMOCRATIC REPUBLIC CONGO|DEMOCRATIC REPUBLIC OF THE CONGO' = 'DR CONGO'
                                                      )) 
 
@@ -52,8 +52,8 @@ countries_string <- world.cities_edit$country.etc %>%
                               'Ukraine'='Ucraine', 'UK'= 'United Kingdom',
                               'Reunion'='France')) 
 
-# Add in UK countries
-UK_string <- 'England|Scotland|Ireland|Wales' %>% 
+# Add in UK string
+UK_string <- 'England|Scotland|Wales' %>%  
   str_to_upper(.)
 
 # Add USA states - for affiliations that fail to include 'USA|United States'
@@ -118,9 +118,6 @@ names(ZipCodes) = c("CountryCode", "zip", "PlaceName",
 # match the rest of the USA articles
 zip_codes <- ZipCodes %>% 
   mutate(CountryCode = 'USA')
-
-# save the zip_codes data to a csc incase the weblink above becomes broken later
-write_csv(zip_codes,'raw_data/US_Zipcodes.csv')
 
 # crosscheck zip codes against the list
 states <- left_join(df_no_country,zip_codes[,c(2,1)], by='zip' ) %>% 
