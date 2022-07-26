@@ -3,7 +3,7 @@ This repository contains R scripts and raw data for bibliometric analysis of vol
 
 Unfortunately we were only given permission to share article metadata from Scopus (and not from the Web of Science which was our main source of data) meaning <1% of the data we downloaded can be uploaded here for the purpose of sharing the code, workflow and results of this study. 
 
-For anyone who has access to to the Web of Science and would like to perform a similar analysis to that conducted in this study. We have provided a word document outlining a step by step process for how to integrate new data into the existing set of scripts here.
+For anyone who has access to to the Web of Science and would like to perform a similar analysis to that conducted in this study. We have provided a [word document](https://github.com/vharg/Bibli_Volc/blob/main/S8_WoSDataDownloadInstructions.docx) outlining a step by step process for how to integrate new WoS data into the existing set of scripts here.
 
 
 ### If you wish to test out the scripts shared here (even with the small amount of Scopus data available) you should:
