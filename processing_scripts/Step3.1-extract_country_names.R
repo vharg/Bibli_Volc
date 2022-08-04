@@ -22,15 +22,20 @@ rd$Addresses <- sapply(str_to_upper(rd$Addresses),toString)
    
 
 # Then insert replacements
-rd$Addresses <-  str_replace_all(string = rd$Addresses, pattern = c('AUSTL' = 'AUSTRALIA','AZORES|ACORES' = 'PORTUGAL','BURMA'='MYANMAR','CABO VERDE' = 'CAPE VERDE','COMORES|KOMORI' = 'COMOROS', 
-                                                     'CANARY ISLANDS' = 'SPAIN','FED REP GER'= 'GERMANY', 'KOREA NORTH' = 'NORTH KOREA',
-                                                     'KOREA SOUTH' = 'SOUTH KOREA','U ARAB EMIRATES' = 'UNITED ARAB EMIRATES', 'GAZA STRIP' = 'PALESTINE', 
-                                                     'ST KITTS' = 'SAINT KITTS AND NEVIS', 'INDIANA' = 'IN', 'UNITED STATES' = 'USA', 'PAPUA N GUINEA'= 'PAPUA NEW GUINEA',
-                                                     'BOSNIA'= 'BOSNIA AND HERZEGOVINA', 'MADIERA' = 'MADEIRA', 'TRINIDAD TOBAGO' = 'TRINIDAD AND TOBAGO',
-                                                     'COTE IVOIRE' = 'IVORY COAST', 'BOSNIA' = 'BOSNIA AND HERZEGOVINA','FALKLAND ISLAND' = 'FALKLAND ISLANDS',
-                                                     'USSR' = 'RUSSIA' , 'UKRAINE'='UCRAINE', 'UK|NORTHERN IRELAND|N. IRELAND|NORTH IRELAND|N IRELAND' = 'UNITED KINGDOM', 'PEOPLES R CHINA' = 'CHINA',
-                                                     'DROC|DRC|REP CONGO|DEM REP CONGO|CONGO DEMOCRATIC REPUBLIC|DEMOCRATIC REPUBLIC CONGO|DEMOCRATIC REPUBLIC OF THE CONGO' = 'DR CONGO'
-                                                     )) 
+rd$Addresses <-  str_replace_all(string = rd$Addresses, 
+                                 pattern = c('INDIANA' = 'IN', 'CABO VERDE' = 'CAPE VERDE',
+                                             'COMORES' = 'COMOROS', 'KOREA NORTH' = 'NORTH KOREA',
+                                             'KOREA SOUTH' = 'SOUTH KOREA','U ARAB EMIRATES' = 'UNITED ARAB EMIRATES',
+                                             'GAZA STRIP'= 'PALESTINE', 'ST KITTS AND NEVIS' = 'SAINT KITTS AND NEVIS', 
+                                             'UNITED STATES' = 'USA', 'BOSNIA'= 'BOSNIA AND HERZEGOVINA', 
+                                             'MADIERA' = 'MADEIRA', 'TRINIDAD TOBAGO' = 'TRINIDAD AND TOBAGO', 
+                                             'IVORY COAST' = 'CÔTE D\'IVOIRE', 'BOSNIA' = 'BOSNIA AND HERZEGOVINA',
+                                             'FALKLAND ISLAND' = 'FALKLAND ISLANDS', 'UKRAINE'='UCRAINE', 
+                                             'PAPUA N GUINEA' = 'PAPUA NEW GUINEA', 'AUSTL' = 'AUSTRALIA', 'R.NION' = 'RÉUNION', 
+                                             'ST KITTS' = 'SAINT KITTS AND NEVIS', 
+                                             ' DROC | DRC |DEM REP CONGO|CONGO DEMOCRATIC REPUBLIC|DEMOCRATIC REPUBLIC CONGO|DEMOCRATIC REPUBLIC OF THE CONGO' = 'DR CONGO', 
+                                             'UK|NORTHERN IRELAND|N. IRELAND|NORTH IRELAND|N IRELAND'= 'UNITED KINGDOM', 
+                                             'GAZA' = 'PALESTINE', 'SAINT-BARTHELEMY|ST. BARTS|ST BARTHS' = 'SAINT BARTHÉLEMY'))
 
 
 # Create a copy of rd for further processing
@@ -38,22 +43,32 @@ df <- rd %>%
   mutate(affil = Addresses)
 
 # create a list of countries as a single string that can be searched
-world.cities_edit <- world.cities %>% 
-  filter(!country.etc == 'Montserrat')
+wc_check <- maps::world.cities
 
-countries_string <- world.cities_edit$country.etc %>% 
-  unique() %>% 
+world_countries <- wc_check %>% 
+  dplyr::filter(!.$country.etc == 'Congo') %>% 
+  mutate(c_name = case_when(country.etc == 'Guinea' ~ 'Guinea-Bissau')) %>% 
+  mutate(c_name = coalesce(c_name,country.etc)) %>% 
+  select(c_name) %>% 
+  unique()
+
+countries_string <- world_countries$c_name %>% 
   str_c(.,collapse = '|') %>%
-  # edit some of the country names e.g. UK --> United Kingdom
-  # so that they match the way country names are written in GVP
+  # edit some of the country names so that they match the way country names are written in GVP
+  # e.g. UK --> United Kingdom
   # changing Ukraine to avoid 'UK' being extracted
   str_replace_all(string = ., 
                   pattern = c('Congo Democratic Republic'='DR Congo',
                               'Ukraine'='Ucraine', 'UK'= 'United Kingdom',
-                              'Reunion'='France')) 
+                              'R.union'='France')) %>% 
+  # remove places that are not countries from the list
+  str_replace_all(string = .,
+                 pattern = 'Montserrat|Sicily|Easter Island|Mayotte|Pitcairn|Canary Islands|Guam|Wallis and Futuna|Faroe Islands|Azores|US Virgin Islands|Guadeloupe|Tokelau|Svalbard and Jan Mayen|Martinique|Cayman Islands|Netherlands Antilles|New Caledonia|Turks and Caicos|Madeira|Gibraltar|Saint-Barthelemy|Saint Barthélemy|Bermuda|Norfolk Island|Saint-Martin|Bermuda|Saint Pierre and Miquelon|Anguilla|Saint Helena|British Virgin Islands|American Samoa|French Polynesia',
+                 replacement = "Place_Removed_Here")
+countries_string
 
 # Add in UK string
-UK_string <- 'England|Scotland|Wales' %>%  
+UK_string <- 'England|Scotland|Wales|Northern Ireland' %>%  
   str_to_upper(.)
 
 # Add USA states - for affiliations that fail to include 'USA|United States'
@@ -62,7 +77,7 @@ US_states <- (str_c(unique(US_cities$state_name), collapse = "|")) %>%
   str_to_upper(.)
 
 # Add missing countries or alternative names - do not include Antarctica
-other_countries_string <- 'North Korea|South Korea|Serbia|Montenegro|St Kitts and Nevis|Palestine|Hong Kong|Yugoslavia|Bosnia and Herzegovina'
+other_countries_string <- 'North Korea|South Korea|Serbia|Montenegro|St Kitts and Nevis|Palestine|Bosnia and Herzegovina'
 
 # concatenate all the country/state name strings together
 loc_string <- str_c(c(countries_string,UK_string,other_countries_string,US_states), collapse = "|") %>% 
@@ -151,5 +166,4 @@ df_has_country <- df %>%
 df <- rbind(df_has_country, states_matched, leftovers_matched)
 
 saveRDS(df, 'data_processed/countries_extracted_tk.Rdata')
-
 
