@@ -49,13 +49,14 @@ volcano_pubs_unique <- volcano_pubs %>%
   # arrange data so inclusive articles (1s) are higher in table
   ## remove 'desc()' function to classify inclusivity with strict definition - (0s are higher in table)
 
-  #arrange(desc(`Article Title`, matching)) %>%  # use this line for Generous definition
-  arrange(`Article Title`, matching) %>% # use this line for Strict definition
+  arrange(desc(`Article Title`, matching)) %>%  # use this line for Generous definition
+  #arrange(`Article Title`, matching) %>% # use this line for Strict definition
   
   # for articles that name multiple volcanoes, 
   # distinct selects only the first instance of each article 
   distinct(`Article Title`, .keep_all = T)
 
+# Inclusion summary ----
 ## What percentage of articles include at least one local researcher
 paste(round(sum(volcano_pubs_unique$matching)/nrow(volcano_pubs_unique)*100), 
       'percent of articles are classified as inclusive.',
@@ -81,7 +82,7 @@ prevalence <- volcano_pubs %>%
 tidy_prevalence <- prevalence %>% 
   select(v_country,total_matching,total_articles) %>% 
   unique %>% 
-  #filter(total_articles >50) %>% 
+  filter(total_articles >50) %>% 
   pivot_longer(cols = c('total_articles','total_matching'),
                names_to = 'metric',values_to = 'n_articles')
 
@@ -90,7 +91,7 @@ gprev <- ggplot(tidy_prevalence)+
            position = 'dodge')+
   labs(x = 'Number of articles',
       y = '')+
-  #ggtitle('Countries with over 50 articles')+
+  ggtitle('Countries with over 50 articles')+
   theme(legend.title = element_blank())
 
 gprev
@@ -140,3 +141,13 @@ leading <- lead_pubs %>%
 # save the dataset
 saveRDS(leading, 'data_processed/lead_and_include_tk.Rdata')
 #write_csv(leading, 'data_processed/lead_and_include_tk.csv')
+
+
+# leadership summary ----
+
+## Calculating by instance of volcano name extraction instead of per individual article
+## This is the main method we use in the paper
+paste(round(sum(leading$lead_match)/nrow(leading)*100), 
+      'percent of volcano name extractions are from an article led by a local author.',
+      sum(leading$lead_match),'out of',nrow(leading), 'mentions')
+
